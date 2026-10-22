@@ -64,6 +64,22 @@ const projects = [
     linkLabel: 'Source Code',
     visual: 'game',
   },
+  {
+    number: '04',
+    category: 'FRONTEND · JAVASCRIPT TOOL',
+    title: 'Currency Calculator',
+    description: 'A web-based currency calculator with a simple interface for currency conversion.',
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    bullets: [
+      'Interactive currency conversion interface',
+      'Live demo hosted on GitHub Pages',
+      'Source code available on GitHub',
+    ],
+    href: 'https://github.com/Vamsi-Krishna-21/Currency-Calculator',
+    demo: 'https://vamsi-krishna-21.github.io/Currency-Calculator/',
+    linkLabel: 'Source Code',
+    visual: 'currency',
+  },
 ]
 
 function ProjectVisual({ type }) {
@@ -94,6 +110,21 @@ function ProjectVisual({ type }) {
           <p>NUMBER GUESSING GAME</p>
           <div className="game-number">?</div>
           <div className="game-preview-button">Start Playing</div>
+          <small>Illustrative UI preview</small>
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'currency') {
+    return (
+      <div className="project-visual currency-visual" aria-label="Currency calculator preview">
+        <div className="game-preview">
+          <span className="game-emoji">💱</span>
+          <h4>Currency Calculator</h4>
+          <p>CURRENCY CONVERTER</p>
+          <div className="game-number">₹ ⇄ $</div>
+          <div className="game-preview-button">Convert Currency</div>
           <small>Illustrative UI preview</small>
         </div>
       </div>
