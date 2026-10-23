@@ -29,7 +29,7 @@ const projects = [
       'Semantic retrieval and source citations',
       'LLM-based answer generation',
     ],
-    href: 'https://github.com/Vamsi-Krishna-21/ca-rag1',
+    href: 'https://github.com/Vamsi-Krishna-21/CA_RAG',
     linkLabel: 'View repository',
     visual: 'rag',
   },
