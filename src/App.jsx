@@ -1,14 +1,27 @@
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  ArrowDownToLine, ArrowUpRight, Github, Mail, Menu, X, Code2,
-  Monitor, Database, BrainCircuit, GraduationCap, MapPin, ExternalLink,
-  BriefcaseBusiness
+  ArrowDownToLine,
+  ArrowUpRight,
+  Github,
+  Mail,
+  Menu,
+  X,
+  Code2,
+  Monitor,
+  Database,
+  BrainCircuit,
+  GraduationCap,
+  MapPin,
+  ExternalLink,
+  BriefcaseBusiness,
+  Sun,
+  Moon,
 } from 'lucide-react'
 
 const GITHUB = 'https://github.com/Vamsi-Krishna-21'
 const EMAIL = 'vamsikrishna212006@gmail.com'
 const LINKEDIN = ''
+const RESUME_URL = '/assets/Vamsi_Krishna_Resume.pdf'
 
 const skills = [
   { title: 'Frontend', icon: Monitor, items: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Responsive UI'] },
@@ -24,11 +37,7 @@ const projects = [
     title: 'Context-Aware Retrieval-Augmented Generation',
     description: 'A document question-answering application designed to answer queries about uploaded PDFs using retrieval and similarity validation.',
     tags: ['React', 'FastAPI', 'MongoDB', 'FAISS', 'Docker'],
-    bullets: [
-      'Adaptive chunking and query rewriting',
-      'Semantic retrieval and source citations',
-      'LLM-based answer generation',
-    ],
+    bullets: ['Adaptive chunking and query rewriting', 'Semantic retrieval and source citations', 'LLM-based answer generation'],
     href: 'https://github.com/Vamsi-Krishna-21/CA_RAG',
     linkLabel: 'View repository',
     visual: 'rag',
@@ -39,13 +48,9 @@ const projects = [
     title: 'Login Validation',
     description: 'A login workflow project built with a React frontend and Node.js backend.',
     tags: ['React', 'JavaScript', 'HTML', 'CSS', 'Node.js'],
-    bullets: [
-      'Frontend and backend integration',
-      'Login form workflow',
-      'Focus on clear, understandable interaction',
-    ],
-    href: GITHUB,
-    linkLabel: 'Find project on GitHub',
+    bullets: ['Frontend and backend integration', 'Login form workflow', 'Focus on clear, understandable interaction'],
+    href: 'https://github.com/Vamsi-Krishna-21/Login',
+    linkLabel: 'View repository',
     visual: 'login',
   },
   {
@@ -54,11 +59,7 @@ const projects = [
     title: 'Galaxy Wizard — Number Guessing',
     description: 'An interactive number guessing game with VS Computer, VS Friend, and Duel modes.',
     tags: ['HTML', 'CSS', 'JavaScript'],
-    bullets: [
-      'Multiple game modes',
-      'Interactive gameplay and user feedback',
-      'Practice with JavaScript logic and DOM interaction',
-    ],
+    bullets: ['Multiple game modes', 'Interactive gameplay and user feedback', 'Practice with JavaScript logic and DOM interaction'],
     href: 'https://github.com/Vamsi-Krishna-21/Number-Guessing',
     demo: 'https://vamsi-krishna-21.github.io/Number-Guessing/',
     linkLabel: 'Source Code',
@@ -70,11 +71,7 @@ const projects = [
     title: 'Currency Calculator',
     description: 'A web-based currency calculator with a simple interface for currency conversion.',
     tags: ['HTML', 'CSS', 'JavaScript'],
-    bullets: [
-      'Interactive currency conversion interface',
-      'Live demo hosted on GitHub Pages',
-      'Source code available on GitHub',
-    ],
+    bullets: ['Interactive currency conversion interface', 'Live demo hosted on GitHub Pages', 'Source code available on GitHub'],
     href: 'https://github.com/Vamsi-Krishna-21/Currency-Calculator',
     demo: 'https://vamsi-krishna-21.github.io/Currency-Calculator/',
     linkLabel: 'Source Code',
@@ -101,30 +98,16 @@ function ProjectVisual({ type }) {
     )
   }
 
-  if (type === 'game') {
+  if (type === 'game' || type === 'currency') {
+    const isGame = type === 'game'
     return (
-      <div className="project-visual game-visual" aria-label="Number guessing game preview">
+      <div className={`project-visual ${isGame ? 'game-visual' : 'currency-visual'}`} aria-label={isGame ? 'Number guessing game preview' : 'Currency calculator preview'}>
         <div className="game-preview">
-          <span className="game-emoji">🪄</span>
-          <h4>Galaxy Wizard</h4>
-          <p>NUMBER GUESSING GAME</p>
-          <div className="game-number">?</div>
-          <div className="game-preview-button">Start Playing</div>
-          <small>Illustrative UI preview</small>
-        </div>
-      </div>
-    )
-  }
-
-  if (type === 'currency') {
-    return (
-      <div className="project-visual currency-visual" aria-label="Currency calculator preview">
-        <div className="game-preview">
-          <span className="game-emoji">💱</span>
-          <h4>Currency Calculator</h4>
-          <p>CURRENCY CONVERTER</p>
-          <div className="game-number">₹ ⇄ $</div>
-          <div className="game-preview-button">Convert Currency</div>
+          <span className="game-emoji">{isGame ? '🪄' : '💱'}</span>
+          <h4>{isGame ? 'Galaxy Wizard' : 'Currency Calculator'}</h4>
+          <p>{isGame ? 'NUMBER GUESSING GAME' : 'CURRENCY CONVERTER'}</p>
+          <div className="game-number">{isGame ? '?' : '₹ ⇄ $'}</div>
+          <div className="game-preview-button">{isGame ? 'Start Playing' : 'Convert Currency'}</div>
           <small>Illustrative UI preview</small>
         </div>
       </div>
@@ -147,6 +130,24 @@ function ProjectVisual({ type }) {
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('portfolio-theme') || 'dark'
+    } catch {
+      return 'dark'
+    }
+  })
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    try {
+      localStorage.setItem('portfolio-theme', theme)
+    } catch {
+      // Theme switching still works when storage is unavailable.
+    }
+  }, [theme])
+
+  const toggleTheme = () => setTheme(current => current === 'dark' ? 'light' : 'dark')
   const navItems = ['Home', 'About', 'Projects', 'Skills', 'Contact']
   const closeMenu = () => setMenuOpen(false)
 
@@ -159,6 +160,7 @@ function App() {
 
         <button
           className="menu-toggle"
+          type="button"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
           aria-expanded={menuOpen}
@@ -168,11 +170,21 @@ function App() {
 
         <nav className={menuOpen ? 'navigation open' : 'navigation'} aria-label="Main navigation">
           {navItems.map(item => (
-            <a key={item} href={`#${item.toLowerCase()}`} onClick={closeMenu}>
-              {item}
-            </a>
+            <a key={item} href={`#${item.toLowerCase()}`} onClick={closeMenu}>{item}</a>
           ))}
-          <a className="nav-resume" href="/assets/Vamsi_Krishna_Resume.pdf" target="_blank" rel="noreferrer">
+
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+            <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+          </button>
+
+          <a className="nav-resume" href={RESUME_URL} target="_blank" rel="noopener noreferrer">
             <ArrowDownToLine size={16} /> Resume
           </a>
         </nav>
@@ -194,9 +206,9 @@ function App() {
               <a className="button secondary" href="#projects"><Github size={17} /> View my work</a>
             </div>
             <div className="social-links">
-              <a href={GITHUB} target="_blank" rel="noreferrer"><Github size={17} /> GitHub <ArrowUpRight size={13} /></a>
+              <a href={GITHUB} target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub <ArrowUpRight size={13} /></a>
               <a href={`mailto:${EMAIL}`}><Mail size={17} /> Email</a>
-              {LINKEDIN && <a href={LINKEDIN} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={13} /></a>}
+              {LINKEDIN && <a href={LINKEDIN} target="_blank" rel="noopener noreferrer"><BriefcaseBusiness size={17} /> LinkedIn <ArrowUpRight size={13} /></a>}
             </div>
           </div>
 
@@ -259,7 +271,7 @@ function App() {
               <p className="section-kicker">SELECTED WORK</p>
               <h2 className="section-title">Projects</h2>
             </div>
-            <a className="text-link" href={GITHUB} target="_blank" rel="noreferrer">
+            <a className="text-link" href={GITHUB} target="_blank" rel="noopener noreferrer">
               GitHub profile <ArrowUpRight size={14} />
             </a>
           </div>
@@ -279,11 +291,11 @@ function App() {
                   <ul>{project.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
                   <div className="project-actions">
                     {project.demo && (
-                      <a className="project-link" href={project.demo} target="_blank" rel="noreferrer">
+                      <a className="project-link" href={project.demo} target="_blank" rel="noopener noreferrer">
                         Live Demo <ExternalLink size={14} />
                       </a>
                     )}
-                    <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
+                    <a className="project-link" href={project.href} target="_blank" rel="noopener noreferrer">
                       {project.linkLabel} <ExternalLink size={14} />
                     </a>
                   </div>
@@ -291,10 +303,7 @@ function App() {
               </article>
             ))}
           </div>
-          <p className="note">
-            Project visuals are illustrative. Replace them with screenshots of your running
-            applications when available. Confirm every project claim and link before publishing.
-          </p>
+          <p className="note">Project visuals are illustrative. Confirm every project claim and link before publishing.</p>
         </section>
 
         <section className="contact-section" id="contact">
@@ -302,9 +311,7 @@ function App() {
             <div>
               <p className="section-kicker">LET'S CONNECT</p>
               <h2 className="section-title">Have an opportunity or idea?</h2>
-              <p className="muted">
-                I'm open to connecting about frontend development, projects, and early-career opportunities.
-              </p>
+              <p className="muted">I'm open to connecting about frontend development, projects, and early-career opportunities.</p>
             </div>
             <div className="contact-links">
               <a href={`mailto:${EMAIL}`}>
@@ -312,13 +319,13 @@ function App() {
                 <div><strong>Email me</strong><small>{EMAIL}</small></div>
                 <b><ArrowUpRight size={16} /></b>
               </a>
-              <a href={GITHUB} target="_blank" rel="noreferrer">
+              <a href={GITHUB} target="_blank" rel="noopener noreferrer">
                 <span><Github size={20} /></span>
                 <div><strong>GitHub</strong><small>Explore my repositories</small></div>
                 <b><ArrowUpRight size={16} /></b>
               </a>
               {LINKEDIN && (
-                <a href={LINKEDIN} target="_blank" rel="noreferrer">
+                <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">
                   <span><BriefcaseBusiness size={20} /></span>
                   <div><strong>LinkedIn</strong><small>Connect professionally</small></div>
                   <b><ArrowUpRight size={16} /></b>
